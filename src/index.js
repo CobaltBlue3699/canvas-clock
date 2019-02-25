@@ -75,7 +75,7 @@ window.onload = function () {
         draw(bufferCtx, function (ctx) {
             ctx.strokeStyle = ctx.fillStyle = '#fff';
             ctx.font = "15px Arial";
-            for(let count=60, i=0, r=300; i<count;i++) {
+            for(let count=60, i=0, r=250; i<count;i++) {
                 let deg = angleToRadian( i * (360 / count) );
                 let scale = .01 + 
                         ((i % 5 == 0) ? .01 : 0) +
@@ -138,11 +138,26 @@ window.onload = function () {
             m = (h*60),//minutes
             s = (m*60);//seconds
 
+        // 畫出波動狀圓形內圍
+        draw(ctx, function (ctx) {
+            for(let count=360, i=0, r=200; i<=count;i++) {
+                //Math.cos -> 波動型狀 -> 要是2PI的倍數(一個週期)否則週期不完整
+                let nowR = r + 3*Math.sin(2 * Math.PI * ( t * i ) * .001 );
+                let deg = angleToRadian( i * (360 / count) );
+                ctx.lineTo(
+                    nowR * Math.cos(deg),
+                    nowR * Math.sin(deg)
+                );
+            }
+            ctx.strokeStyle = '#fff';
+            ctx.stroke();
+        });
+
         // 畫出波動狀圓形外圍
         draw(ctx, function (ctx) {
-            for(let count=360, i=0, r=250; i<=count;i++) {
+            for(let count=360, i=0, r=350; i<=count;i++) {
                 //Math.cos -> 波動型狀 -> 要是2PI的倍數(一個週期)否則週期不完整
-                let nowR = r + 3*Math.cos(2 * Math.PI * ( i / 10 + t/500 ) );
+                let nowR = r + 4*Math.cos(2 * Math.PI * ( i / 10 + t / 100 ) );
                 let deg = angleToRadian( i * (360 / count) );
                 ctx.lineTo(
                     nowR * Math.cos(deg),
@@ -155,7 +170,7 @@ window.onload = function () {
 
         // 秒針
         let sDeg = angleToRadian( -90 + (s * 6) ),
-            sR = 300;
+            sR = 280;
         drawLine(ctx, Vector(0, 0), {
             x: sR * Math.cos(sDeg),
             y: sR * Math.sin(sDeg)
@@ -165,7 +180,7 @@ window.onload = function () {
 
         // 分針
         let mDeg = angleToRadian( -90 + (m * 6) ),
-            mR = 200;
+            mR = 150;
         drawLine(ctx, Vector(0, 0), {
             x: mR * Math.cos(mDeg),
             y: mR * Math.sin(mDeg)
@@ -176,7 +191,7 @@ window.onload = function () {
 
         // 時針
         let hDeg = angleToRadian( -90 + (h * 30) ),
-            hR = 150;
+            hR = 100;
         drawLine(ctx, Vector(0, 0), {
             x: hR * Math.cos(hDeg),
             y: hR * Math.sin(hDeg)

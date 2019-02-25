@@ -138,11 +138,11 @@ window.onload = function () {
             m = (h*60),//minutes
             s = (m*60);//seconds
 
-        // 畫出波動狀圓形內圍
+        // 畫出波動狀內圍
         draw(ctx, function (ctx) {
             for(let count=360, i=0, r=200; i<=count;i++) {
                 //Math.cos -> 波動型狀 -> 要是2PI的倍數(一個週期)否則週期不完整
-                let nowR = r + 3*Math.sin(2 * Math.PI * ( t * i ) * .001 );
+                let nowR = r + 2 * Math.sin(2 * Math.PI * ( t / 1000 + i / 10 ) );
                 let deg = angleToRadian( i * (360 / count) );
                 ctx.lineTo(
                     nowR * Math.cos(deg),
@@ -155,10 +155,10 @@ window.onload = function () {
 
         // 畫出波動狀圓形外圍
         draw(ctx, function (ctx) {
-            for(let count=360, i=0, r=350; i<=count;i++) {
+            for(let count=90, i=0, r=350; i<=count;i++) {
                 //Math.cos -> 波動型狀 -> 要是2PI的倍數(一個週期)否則週期不完整
-                let nowR = r + 4*Math.cos(2 * Math.PI * ( i / 10 + t / 100 ) );
-                let deg = angleToRadian( i * (360 / count) );
+                let nowR = r + 3 * Math.sin(2 * Math.PI * ( t * .001 * i ) );
+                let deg = angleToRadian( i + t / 100 ) ;
                 ctx.lineTo(
                     nowR * Math.cos(deg),
                     nowR * Math.sin(deg)
@@ -166,6 +166,20 @@ window.onload = function () {
             }
             ctx.strokeStyle = '#fff';
             ctx.stroke();
+
+            ctx.beginPath();
+            for(let count=270, i=180, r=350; i<=count;i++) {
+                //Math.cos -> 波動型狀 -> 要是2PI的倍數(一個週期)否則週期不完整
+                let nowR = r + 3 * Math.sin(2 * Math.PI * ( t * .001 * i ) );
+                let deg = angleToRadian( i + t / 100 );
+                ctx.lineTo(
+                    nowR * Math.cos(deg),
+                    nowR * Math.sin(deg)
+                );
+            }
+            ctx.strokeStyle = '#fff';
+            ctx.stroke();
+            
         });
 
         // 秒針
